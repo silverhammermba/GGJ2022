@@ -20,12 +20,12 @@ var outside_impulse: Vector2
 
 var attack_timer: Timer
 
+var attack_target: RigidBody2D
+
 func _ready():
 	target_dir = RNG.rand_vec2()
 	friend_zone = $FriendZone
 	attack_timer = $Timer
-	attack_timer.one_shot = true
-	attack_timer.start(1)
 	
 func set_faction(fac):
 	faction = fac
@@ -45,14 +45,19 @@ func damage(amount, source: Vector2):
 	else:
 		outside_impulse += source.direction_to(global_position) * amount * damage_force_scale
 	
-func try_attack(body):
-	if body.faction != faction:
-		print("attacking")
-		if attack_timer.is_stopped():
-			attack_timer.start(attack_delay)
-			body.damage(attack_power, global_position)
-		else:
-			print("attack timer not stopped")
+func start_attacking(body):
+	if !attack_target and body.faction != faction:
+		attack_target = body
+		attack_timer.start(attack_delay)
+		
+func stop_attacking(body):
+	if body == attack_target:
+		attack_timer.stop()
+		attack_target = null
+		
+func attack():
+	if attack_target:
+		attack_target.damage(attack_power, global_position)
 
 func _physics_process(delta):
 	var bodies = friend_zone.get_overlapping_bodies()
@@ -85,4 +90,10 @@ func _physics_process(delta):
 	outside_impulse = Vector2()
 
 func _on_Pawn_body_entered(body):
-	try_attack(body)
+	start_attacking(body)
+
+func _on_Pawn_body_exited(body):
+	stop_attacking(body)
+
+func _on_Timer_timeout():
+	attack()
