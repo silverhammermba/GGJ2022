@@ -8,3 +8,6 @@ func _on_ResetButton_pressed():
 
 func _on_StompButton_pressed():
 	emit_signal("activate_stomp")
+
+func update_pawns_remaining(count):
+	$PawnsRemainingContainer/Counter.text = str(count)

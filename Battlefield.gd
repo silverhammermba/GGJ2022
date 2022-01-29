@@ -1,11 +1,14 @@
 extends Node2D
 
+signal pawns_remaining(count)
+
 const pawn_scene = preload("res://Pawn.tscn")
 
 var field_size: Vector2
 export var deploy_edge = 0
 export var deploy_width = 100
 export var army_size = 50
+var pawn_count = army_size * 2
 
 var trues = []
 var falses = []
@@ -54,6 +57,7 @@ func _process(_delta):
 func add_pawn(faction):
 	var pawn = pawn_scene.instance()
 	add_child(pawn)
+	pawn.connect("death", self, "decrement_pawn_count")
 	pawn.set_faction(faction)
 	var edge = deploy_edge
 	if faction:
@@ -65,3 +69,7 @@ func add_pawn(faction):
 	pawn.global_position = Vector2(RNG.gen.randf_range(0, deploy_width) + edge, RNG.gen.randf_range(0, field_size.y))
 	
 	return weakref(pawn)
+	
+func decrement_pawn_count():
+	pawn_count -= 1
+	emit_signal("pawns_remaining", pawn_count)

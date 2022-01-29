@@ -1,0 +1,61 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://HUD.gd" type="Script" id=1]
+
+[node name="HUD" type="CanvasLayer"]
+offset = Vector2( -10, 10 )
+transform = Transform2D( 1, 0, 0, 1, -10, 10 )
+script = ExtResource( 1 )
+
+[node name="PowersContainer" type="VBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -102.0
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="PowersContainer"]
+margin_right = 102.0
+margin_bottom = 14.0
+text = "Powers"
+align = 1
+
+[node name="NoPowerButton" type="Button" parent="PowersContainer"]
+margin_top = 18.0
+margin_right = 102.0
+margin_bottom = 38.0
+text = "None"
+
+[node name="StompButton" type="Button" parent="PowersContainer"]
+margin_top = 42.0
+margin_right = 102.0
+margin_bottom = 62.0
+text = "Stomp"
+
+[node name="PawnsRemainingContainer" type="VBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -234.0
+margin_top = -2.0
+margin_right = -123.0
+margin_bottom = 38.0
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="PawnsRemainingContainer"]
+margin_right = 111.0
+margin_bottom = 14.0
+text = "Pawns Remaining"
+
+[node name="Counter" type="Label" parent="PawnsRemainingContainer"]
+margin_top = 18.0
+margin_right = 111.0
+margin_bottom = 32.0
+
+[connection signal="pressed" from="PowersContainer/NoPowerButton" to="." method="_on_ResetButton_pressed"]
+[connection signal="pressed" from="PowersContainer/StompButton" to="." method="_on_StompButton_pressed"]
