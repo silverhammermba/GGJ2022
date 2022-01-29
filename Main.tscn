@@ -1,19 +1,19 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Battlefield.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Controls.tscn" type="PackedScene" id=2]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Main.gd" type="Script" id=3]
 [ext_resource path="res://Powers.tscn" type="PackedScene" id=5]
 
 [node name="Main" type="Node"]
 script = ExtResource( 3 )
 
-[node name="Controls" parent="." instance=ExtResource( 2 )]
+[node name="HUD" parent="." instance=ExtResource( 2 )]
 
 [node name="Battlefield" parent="." instance=ExtResource( 1 )]
-army_size = 10
 
 [node name="Powers" parent="." instance=ExtResource( 5 )]
 
-[connection signal="activate_stomp" from="Controls" to="." method="_on_Controls_activate_stomp"]
-[connection signal="reset_power" from="Controls" to="." method="_on_Controls_reset_power"]
+[connection signal="activate_stomp" from="HUD" to="." method="_on_HUD_activate_stomp"]
+[connection signal="reset_power" from="HUD" to="." method="_on_HUD_reset_power"]
+[connection signal="pawns_remaining" from="Battlefield" to="." method="_on_Battlefield_pawns_remaining"]

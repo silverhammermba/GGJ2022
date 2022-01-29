@@ -1,5 +1,7 @@
 extends RigidBody2D
 
+signal death
+
 export var max_stat = 100.0
 export var hp = 100.0
 export var morale = 100.0
@@ -64,6 +66,7 @@ func damage(amount, force, source: Vector2):
 
 	if hp <= 0:
 		queue_free()
+		emit_signal("death")
 	else:
 		outside_impulse += source.direction_to(global_position) * force
 	
