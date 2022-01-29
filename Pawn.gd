@@ -18,22 +18,19 @@ func _ready():
 func _physics_process(delta):
 	var bodies = friend_zone.get_overlapping_bodies()
 	
-	if bodies.size() == 1:
-		return
-		
-	var pull_angle = 0.0
-		
-	for body in bodies:
-		if body == self:
-			continue
+	if bodies.size() > 1:
+		var pull_angle = 0.0
 			
-		pull_angle += target_dir.angle_to(body.global_position - global_position) * weight_toward_friends
-		pull_angle += target_dir.angle_to(body.target_dir) * weight_follow_herd
+		for body in bodies:
+			if body == self:
+				continue
+				
+			pull_angle += target_dir.angle_to(body.global_position - global_position) * weight_toward_friends
+			pull_angle += target_dir.angle_to(body.target_dir) * weight_follow_herd
+		
+		var total_weight = (weight_toward_friends + weight_follow_herd) * (bodies.size() - 1)
+		pull_angle /= total_weight
+		
+		target_dir = target_dir.rotated(clamp(pull_angle, -max_turn_per_sec * delta, max_turn_per_sec * delta))
 	
-	var total_weight = (weight_toward_friends + weight_follow_herd) * (bodies.size() - 1)
-	pull_angle /= total_weight
-	
-	target_dir = target_dir.rotated(clamp(pull_angle, -max_turn_per_sec * delta, max_turn_per_sec * delta))
-	
-func _integrate_forces(state):
-	applied_force = target_dir * speed
+	apply_central_impulse(target_dir * speed)
