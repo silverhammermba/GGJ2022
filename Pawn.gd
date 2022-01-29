@@ -42,13 +42,13 @@ func set_faction(fac):
 		color = Color(1, 0, 1)
 	$Sprite.modulate = color
 	
-func damage(amount, source: Vector2):
+func damage(amount, force, source: Vector2):
 	hp -= amount
 
 	if hp <= 0:
 		queue_free()
 	else:
-		outside_impulse += source.direction_to(global_position) * amount * damage_force_scale
+		outside_impulse += source.direction_to(global_position) * force
 	
 func start_attacking(body):
 	if !attack_target and body.faction != faction:
@@ -63,7 +63,7 @@ func stop_attacking(body):
 		
 func attack():
 	if attack_target:
-		attack_target.damage(attack_power, global_position)
+		attack_target.damage(attack_power, attack_power * damage_force_scale, global_position)
 
 func _physics_process(delta):
 	var bodies = friend_zone.get_overlapping_bodies()
@@ -103,13 +103,3 @@ func _on_Pawn_body_exited(body):
 
 func _on_Timer_timeout():
 	attack()
-
-func hit(damage):
-	hp -= damage
-	print(name + " hit for " + str(damage))
-	if hp < 0:
-		die()
-		
-func die():
-	print(name + " died")
-	queue_free()  # Remove pawn from screen
