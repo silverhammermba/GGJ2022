@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://pawn.png" type="Texture" id=1]
+[ext_resource path="res://assets/pawn.png" type="Texture" id=1]
 [ext_resource path="res://Pawn.gd" type="Script" id=2]
 
 [sub_resource type="PhysicsMaterial" id=3]
@@ -21,12 +21,12 @@ contact_monitor = true
 script = ExtResource( 2 )
 speed_in_combat = 0.0
 weight_follow_herd = 3.0
-weight_toward_nemesis = 6.0
+weight_toward_nemesis = 20.0
 max_turn_per_sec = 3.1
-damage_force_scale = 10
-morale_herd_per_sec = 10
-morale_outnumber_per_sec = 40
-morale_hp_per_sec = 50
+damage_force_scale = 40
+morale_herd_per_sec = 15
+morale_outnumber_per_sec = 20
+morale_hp_per_sec = 25
 
 [node name="FriendZone" type="Area2D" parent="."]
 collision_layer = 2

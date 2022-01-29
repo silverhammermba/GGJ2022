@@ -38,6 +38,8 @@ var morale_bar: ColorRect
 var health_max_size
 var morale_max_size
 
+var sent_death = false
+
 func _ready():
 	hp = max_stat
 	morale = max_stat
@@ -61,12 +63,17 @@ func set_faction(fac):
 		color = Color(1, 0, 1)
 	$Sprite.modulate = color
 	
+func demoralize(amount):
+	morale -= amount
+	
 func damage(amount, force, source: Vector2):
 	hp -= amount
 
 	if hp <= 0:
 		queue_free()
-		emit_signal("death")
+		if not sent_death:
+			sent_death = true
+			emit_signal("death")
 	else:
 		outside_impulse += source.direction_to(global_position) * force
 	
@@ -116,14 +123,17 @@ func _physics_process(delta):
 	# average over all friends
 	if num_friends > 0:
 		morale_from_following_herd /= num_friends
-	# -1 to 1 for number of friends vs enemies being near max_outnumber
-	var morale_from_outnumber = clamp((num_friends - num_enemies) / max_outnumber, -1, 1)
+	# if enemies are near, you can regain some morale by having more friends (or lose it for being outnumbered)
+	var morale_from_outnumber = 0.5
+	if num_enemies > 0:
+		morale_from_outnumber = clamp((num_friends - num_enemies) / max_outnumber, -1, 1)
 	# -1 to 0 for current hp
 	var morale_from_hp = hp / max_stat - 1
 	
 	var delta_morale = (morale_from_following_herd * morale_herd_per_sec + morale_from_outnumber * morale_outnumber_per_sec + morale_from_hp * morale_hp_per_sec)
 	morale = clamp(morale + delta_morale * delta, 0, max_stat)
 
+	# if completely demoralized, allow past barriers
 	set_collision_mask_bit(2, morale > 0)
 	
 	total_weight += (weight_toward_friends + weight_follow_herd) * num_friends
