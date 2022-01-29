@@ -2,7 +2,8 @@ extends RigidBody2D
 
 export var hp = 100
 export var morale = 100
-export var speed = 10
+export var speed_out_of_combat = 1
+export var speed_in_combat = 0.5
 export var weight_toward_friends = 1.0
 export var weight_follow_herd = 1.0
 export var weight_toward_nemesis = 1.0
@@ -11,6 +12,8 @@ export var faction = true
 export var attack_power = 5
 export var attack_delay = 1
 export var damage_force_scale = 1
+
+var speed = speed_out_of_combat
 
 var friend_zone: Area2D
 
@@ -26,6 +29,8 @@ func _ready():
 	target_dir = RNG.rand_vec2()
 	friend_zone = $FriendZone
 	attack_timer = $Timer
+	attack_timer.start(attack_delay)
+	attack_timer.set_paused(true)
 	
 func set_faction(fac):
 	faction = fac
@@ -47,13 +52,14 @@ func damage(amount, source: Vector2):
 	
 func start_attacking(body):
 	if !attack_target and body.faction != faction:
+		attack_timer.set_paused(false)
 		attack_target = body
-		attack_timer.start(attack_delay)
+		speed = speed_in_combat
 		
 func stop_attacking(body):
 	if body == attack_target:
-		attack_timer.stop()
 		attack_target = null
+		speed = speed_out_of_combat
 		
 func attack():
 	if attack_target:
