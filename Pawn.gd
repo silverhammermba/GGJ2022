@@ -28,16 +28,26 @@ func _physics_process(_delta):
 	for body in bodies:
 		if body != self:
 			friend_centroid += body.global_position
-			if body.linear_velocity.length_squared() > follow_herd_speed_threshold:
-				herd_direction += body.target_direction
+			herd_direction += body.linear_velocity
 			
 	friend_centroid /= (bodies.size() - 1)
 	herd_direction /= (bodies.size() - 1)
 	
-	var toward_friends = friend_centroid - global_position
+	var toward_friends = (friend_centroid - global_position).normalized()
+	herd_direction = herd_direction.normalized()
 	
-	target_direction = (toward_friends * weight_toward_friends + herd_direction * weight_follow_herd) / (weight_toward_friends + weight_follow_herd)
-	target_direction = target_direction
+	var factors = [
+		[toward_friends, weight_toward_friends * (bodies.size() - 1)],
+		[herd_direction, weight_follow_herd * (bodies.size() - 1)]
+	]
+	
+	var num = Vector2()
+	var den = 0
+	for factor in factors:
+		num += factor[0] * factor[1]
+		den += factor[1]
+		
+	target_direction = num / den
 	
 func _integrate_forces(state):
 	applied_force = target_direction * speed
