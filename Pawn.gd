@@ -103,3 +103,13 @@ func _on_Pawn_body_exited(body):
 
 func _on_Timer_timeout():
 	attack()
+
+func hit(damage):
+	hp -= damage
+	print(name + " hit for " + str(damage))
+	if hp < 0:
+		die()
+		
+func die():
+	print(name + " died")
+	queue_free()  # Remove pawn from screen
