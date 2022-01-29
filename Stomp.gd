@@ -8,4 +8,5 @@ func _process(delta):
 	position = get_viewport().get_mouse_position()
 
 func _on_Stomp_body_entered(body):
-	body.damage(strength, strength * strength_force_scale, global_position)
+	if "faction" in body:
+		body.damage(strength, strength * strength_force_scale, global_position)

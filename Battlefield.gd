@@ -19,21 +19,26 @@ func _ready():
 		
 func _process(delta):
 	var avg_true = Vector2()
+	var num_trues = 0
 	for i in range(army_size):
 		var pawn = trues[i].get_ref()
-		if pawn:
+		if pawn and pawn.morale >= pawn.retreat_threshold:
+			num_trues += 1
 			avg_true += pawn.global_position
 
-	avg_true /= army_size
+	avg_true /= num_trues
 	
 	var avg_false = Vector2()
+	var num_falses = 0
 	for i in range(army_size):
 		var pawn = falses[i].get_ref()
 		if pawn:
 			pawn.nemesis = avg_true
-			avg_false += pawn.global_position
+			if pawn.morale >= pawn.retreat_threshold:
+				num_falses += 1
+				avg_false += pawn.global_position
 
-	avg_false /= army_size
+	avg_false /= num_falses
 	
 	for i in range(army_size):
 		var pawn = trues[i].get_ref()

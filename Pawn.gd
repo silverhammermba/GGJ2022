@@ -17,6 +17,7 @@ export var max_outnumber = 10
 export var morale_herd_per_sec = 1
 export var morale_outnumber_per_sec = 1
 export var morale_hp_per_sec = 1
+export var retreat_threshold = 30
 
 var speed = speed_out_of_combat
 
@@ -67,7 +68,7 @@ func damage(amount, force, source: Vector2):
 		outside_impulse += source.direction_to(global_position) * force
 	
 func start_attacking(body):
-	if !attack_target and body.faction != faction:
+	if !attack_target and "faction" in body and body.faction != faction:
 		attack_timer.set_paused(false)
 		attack_target = body
 		speed = speed_in_combat
@@ -119,11 +120,14 @@ func _physics_process(delta):
 	
 	var delta_morale = (morale_from_following_herd * morale_herd_per_sec + morale_from_outnumber * morale_outnumber_per_sec + morale_from_hp * morale_hp_per_sec)
 	morale = clamp(morale + delta_morale * delta, 0, max_stat)
+
+	set_collision_mask_bit(2, morale > 0)
 	
 	total_weight += (weight_toward_friends + weight_follow_herd) * num_friends
 
 	if nemesis:
-		if morale < 30: # retreat!
+		if morale < retreat_threshold:
+			# all that matters now is getting away from the enemy
 			pull_angle = target_dir.angle_to(global_position - nemesis)
 			total_weight = 1
 		else:	
