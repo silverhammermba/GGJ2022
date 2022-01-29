@@ -1,5 +1,6 @@
 extends RigidBody2D
 
+export var max_stat = 100.0
 export var hp = 100.0
 export var morale = 100.0
 export var speed_out_of_combat = 1
@@ -12,6 +13,10 @@ export var faction = true
 export var attack_power = 5
 export var attack_delay = 1
 export var damage_force_scale = 1
+export var max_outnumber = 10
+export var morale_herd_per_sec = 1
+export var morale_outnumber_per_sec = 1
+export var morale_hp_per_sec = 1
 
 var speed = speed_out_of_combat
 
@@ -31,6 +36,8 @@ var health_max_size
 var morale_max_size
 
 func _ready():
+	hp = max_stat
+	morale = max_stat
 	target_dir = RNG.rand_vec2()
 	friend_zone = $FriendZone
 	health_bar = $HealthBar
@@ -76,18 +83,16 @@ func attack_current_target():
 		
 
 func _physics_process(delta):
-	health_bar.set_size(Vector2(hp * health_max_size / 100, health_bar.rect_size.y))
-	morale_bar.set_size(Vector2(morale * morale_max_size / 100, morale_bar.rect_size.y))
+	health_bar.set_size(Vector2(hp * health_max_size / max_stat, health_bar.rect_size.y))
+	morale_bar.set_size(Vector2(morale * morale_max_size / max_stat, morale_bar.rect_size.y))
 	
 	var bodies = friend_zone.get_overlapping_bodies()
 	
 	var pull_angle = 0.0
 	var total_weight = 0.0
 	var num_friends = 0
-	
-	if nemesis:
-		pull_angle += target_dir.angle_to(nemesis - global_position) * weight_toward_nemesis
-		total_weight += weight_toward_nemesis
+	var num_enemies = 0
+	var morale_from_following_herd = 0
 
 	for body in bodies:
 		if body == self:
@@ -96,9 +101,35 @@ func _physics_process(delta):
 		if body.faction == faction:
 			num_friends += 1
 			pull_angle += target_dir.angle_to(body.global_position - global_position) * weight_toward_friends
-			pull_angle += target_dir.angle_to(body.target_dir) * weight_follow_herd
+			var angle_to_friend = target_dir.angle_to(body.target_dir)
+			pull_angle += angle_to_friend * weight_follow_herd
+			
+			# -1 to 1 for going in opposite/same direction as friend
+			morale_from_following_herd += 1 - 2 * abs(angle_to_friend) / PI
+		else:
+			num_enemies += 1
+	
+	# average over all friends
+	if num_friends > 0:
+		morale_from_following_herd /= num_friends
+	# -1 to 1 for number of friends vs enemies being near max_outnumber
+	var morale_from_outnumber = clamp((num_friends - num_enemies) / max_outnumber, -1, 1)
+	# -1 to 0 for current hp
+	var morale_from_hp = hp / max_stat - 1
+	
+	var delta_morale = (morale_from_following_herd * morale_herd_per_sec + morale_from_outnumber * morale_outnumber_per_sec + morale_from_hp * morale_hp_per_sec)
+	morale = clamp(morale + delta_morale * delta, 0, max_stat)
 	
 	total_weight += (weight_toward_friends + weight_follow_herd) * num_friends
+
+	if nemesis:
+		if morale < 30: # retreat!
+			pull_angle = target_dir.angle_to(global_position - nemesis)
+			total_weight = 1
+		else:	
+			pull_angle += target_dir.angle_to(nemesis - global_position) * weight_toward_nemesis
+			total_weight += weight_toward_nemesis
+		
 	if total_weight > 0:
 		pull_angle /= total_weight
 	

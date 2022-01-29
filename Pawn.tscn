@@ -23,6 +23,9 @@ weight_follow_herd = 3.0
 weight_toward_nemesis = 6.0
 max_turn_per_sec = 3.1
 damage_force_scale = 10
+morale_herd_per_sec = 10
+morale_outnumber_per_sec = 40
+morale_hp_per_sec = 50
 
 [node name="FriendZone" type="Area2D" parent="."]
 collision_layer = 2
