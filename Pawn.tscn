@@ -10,7 +10,6 @@ friction = 0.2
 radius = 104.235
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 11.0
 
 [node name="Pawn" type="RigidBody2D"]
 collision_mask = 5

@@ -24,3 +24,6 @@ margin_top = 24.0
 margin_right = 102.0
 margin_bottom = 44.0
 text = "Stomp"
+
+[connection signal="pressed" from="VBoxContainer/ResetButton" to="." method="_on_ResetButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/StompButton" to="." method="_on_StompButton_pressed"]

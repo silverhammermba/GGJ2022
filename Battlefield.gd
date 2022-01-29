@@ -13,11 +13,11 @@ var falses = []
 func _ready():
 	field_size = get_viewport().get_visible_rect().size
 	
-	for i in range(army_size):
+	for _i in range(army_size):
 		trues.append(add_pawn(true))
 		falses.append(add_pawn(false))
 		
-func _process(delta):
+func _process(_delta):
 	var avg_true = Vector2()
 	var num_trues = 0
 	for i in range(army_size):

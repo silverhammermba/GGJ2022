@@ -1,6 +1,5 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Stomp.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Battlefield.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -12,12 +11,7 @@ extents = Vector2( 12, 335.5 )
 [node name="Battlefield" type="Node2D"]
 script = ExtResource( 2 )
 deploy_edge = 200
-army_size = 100
-
-[node name="Stomp" parent="." instance=ExtResource( 1 )]
-position = Vector2( 192, 267 )
-strength = 1
-strength_force_scale = 150
+army_size = 10
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 collision_layer = 4
