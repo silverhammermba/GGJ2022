@@ -4,4 +4,5 @@
 
 [node name="Battlefield" type="Node2D"]
 script = ExtResource( 2 )
-army_size = 75
+deploy_edge = 200
+army_size = 1
