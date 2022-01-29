@@ -1,7 +1,7 @@
 extends RigidBody2D
 
-export var hp = 100
-export var morale = 100
+export var hp = 100.0
+export var morale = 100.0
 export var speed_out_of_combat = 1
 export var speed_in_combat = 0.5
 export var weight_toward_friends = 1.0
@@ -25,9 +25,18 @@ var attack_timer: Timer
 
 var attack_target: RigidBody2D
 
+var health_bar: ColorRect
+var morale_bar: ColorRect
+var health_max_size
+var morale_max_size
+
 func _ready():
 	target_dir = RNG.rand_vec2()
 	friend_zone = $FriendZone
+	health_bar = $HealthBar
+	morale_bar = $MoraleBar
+	health_max_size = health_bar.rect_size.x
+	morale_max_size = morale_bar.rect_size.x
 	attack_timer = $Timer
 	attack_timer.start(attack_delay)
 	attack_timer.set_paused(true)
@@ -61,11 +70,15 @@ func stop_attacking(body):
 		attack_target = null
 		speed = speed_out_of_combat
 		
-func attack():
+func attack_current_target():
 	if attack_target:
 		attack_target.damage(attack_power, attack_power * damage_force_scale, global_position)
+		
 
 func _physics_process(delta):
+	health_bar.set_size(Vector2(hp * health_max_size / 100, health_bar.rect_size.y))
+	morale_bar.set_size(Vector2(morale * morale_max_size / 100, morale_bar.rect_size.y))
+	
 	var bodies = friend_zone.get_overlapping_bodies()
 	
 	var pull_angle = 0.0
@@ -102,4 +115,4 @@ func _on_Pawn_body_exited(body):
 	stop_attacking(body)
 
 func _on_Timer_timeout():
-	attack()
+	attack_current_target()
