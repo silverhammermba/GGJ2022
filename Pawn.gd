@@ -24,7 +24,7 @@ var speed = speed_out_of_combat
 var friend_zone: Area2D
 
 var target_dir: Vector2
-var nemesis: Vector2
+var nemesis = null
 var outside_impulse: Vector2
 
 var attack_timer: Timer
@@ -125,6 +125,7 @@ func _physics_process(delta):
 	
 	total_weight += (weight_toward_friends + weight_follow_herd) * num_friends
 
+	var current_speed = speed
 	if nemesis:
 		if morale < retreat_threshold:
 			# all that matters now is getting away from the enemy
@@ -133,13 +134,15 @@ func _physics_process(delta):
 		else:	
 			pull_angle += target_dir.angle_to(nemesis - global_position) * weight_toward_nemesis
 			total_weight += weight_toward_nemesis
+	else:
+		current_speed = 0
 		
 	if total_weight > 0:
 		pull_angle /= total_weight
 	
 	target_dir = target_dir.rotated(clamp(pull_angle, -max_turn_per_sec * delta, max_turn_per_sec * delta))
 	
-	apply_central_impulse(target_dir * speed)
+	apply_central_impulse(target_dir * current_speed)
 	apply_central_impulse(outside_impulse)
 	outside_impulse = Vector2()
 
