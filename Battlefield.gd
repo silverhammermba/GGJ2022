@@ -8,17 +8,14 @@ var field_size: Vector2
 export var deploy_edge = 0
 export var deploy_width = 100
 export var army_size = 50
-var pawn_count = army_size * 2
 
+# State Variables
+var pawn_count
 var trues = []
 var falses = []
 
 func _ready():
 	field_size = get_viewport().get_visible_rect().size
-	
-	for _i in range(army_size):
-		trues.append(add_pawn(true))
-		falses.append(add_pawn(false))
 		
 func _process(_delta):
 	var avg_true = Vector2()
@@ -54,6 +51,27 @@ func _process(_delta):
 		if pawn:
 			pawn.nemesis = avg_false
 
+func reset():
+	# Destroy any existing Pawns
+	if trues.size() != 0:
+		for i in range(army_size):
+			var pawn = trues[i].get_ref()
+			if pawn:
+				pawn.queue_free()
+		for i in range(army_size):
+			var pawn = falses[i].get_ref()
+			if pawn:
+				pawn.queue_free()
+		trues.clear()
+		falses.clear()
+	
+	# Create Pawns
+	for _i in range(army_size):
+		trues.append(add_pawn(true))
+		falses.append(add_pawn(false))
+	
+	pawn_count = army_size * 2
+		
 func add_pawn(faction):
 	var pawn = pawn_scene.instance()
 	add_child(pawn)
@@ -73,3 +91,13 @@ func add_pawn(faction):
 func decrement_pawn_count():
 	pawn_count -= 1
 	emit_signal("pawns_remaining", pawn_count)
+	
+func halt_pawns():
+	for i in range(army_size):
+		var pawn = trues[i].get_ref()
+		if pawn:
+			pawn.speed = 0
+	for i in range(army_size):
+		var pawn = falses[i].get_ref()
+		if pawn:
+			pawn.speed = 0

@@ -15,5 +15,6 @@ script = ExtResource( 3 )
 [node name="Powers" parent="." instance=ExtResource( 5 )]
 
 [connection signal="activate_stomp" from="HUD" to="." method="_on_HUD_activate_stomp"]
+[connection signal="play_again" from="HUD" to="." method="_on_HUD_play_again"]
 [connection signal="reset_power" from="HUD" to="." method="_on_HUD_reset_power"]
 [connection signal="pawns_remaining" from="Battlefield" to="." method="_on_Battlefield_pawns_remaining"]
