@@ -34,3 +34,14 @@ func _physics_process(delta):
 		target_dir = target_dir.rotated(clamp(pull_angle, -max_turn_per_sec * delta, max_turn_per_sec * delta))
 	
 	apply_central_impulse(target_dir * speed)
+
+func hit(damage):
+	hp -= damage
+	print(name + " hit for " + str(damage))
+	if hp < 0:
+		die()
+		
+func die():
+	print(name + " died")
+	queue_free()  # Remove pawn from screen
+	
