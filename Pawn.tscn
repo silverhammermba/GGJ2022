@@ -23,7 +23,8 @@ speed_in_combat = 0.0
 weight_follow_herd = 3.0
 weight_toward_nemesis = 20.0
 max_turn_per_sec = 3.1
-damage_force_scale = 40
+attack_power = 10
+damage_force_scale = 15
 morale_herd_per_sec = 15
 morale_outnumber_per_sec = 20
 morale_hp_per_sec = 25
@@ -46,6 +47,7 @@ scale = Vector2( 0.228261, 0.205218 )
 texture = ExtResource( 1 )
 
 [node name="HealthBar" type="ColorRect" parent="."]
+visible = false
 margin_left = -6.0
 margin_top = 4.0
 margin_right = 6.0
@@ -56,11 +58,12 @@ __meta__ = {
 }
 
 [node name="MoraleBar" type="ColorRect" parent="."]
+visible = false
 margin_left = -6.0
 margin_top = 6.0
 margin_right = 6.0
 margin_bottom = 8.0
-color = Color( 0.0941176, 0, 0.933333, 1 )
+color = Color( 0, 0.0862745, 1, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

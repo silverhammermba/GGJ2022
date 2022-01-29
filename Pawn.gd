@@ -28,6 +28,7 @@ var friend_zone: Area2D
 var target_dir: Vector2
 var nemesis = null
 var outside_impulse: Vector2
+var sprite
 
 var attack_timer: Timer
 
@@ -40,7 +41,10 @@ var morale_max_size
 
 var sent_death = false
 
+
+
 func _ready():
+	sprite = $Sprite
 	hp = max_stat
 	morale = max_stat
 	target_dir = RNG.rand_vec2()
@@ -58,10 +62,10 @@ func set_faction(fac):
 	
 	var color: Color
 	if faction:
-		color = Color(0, 1, 0)
+		color = Color(0.52, 0.52, 0.52)
 	else:
-		color = Color(1, 0, 1)
-	$Sprite.modulate = color
+		color = Color(0.9, 0.8, 0)
+	sprite.modulate = color
 	
 func demoralize(amount):
 	morale -= amount
@@ -73,7 +77,7 @@ func damage(amount, force, source: Vector2):
 		queue_free()
 		if not sent_death:
 			sent_death = true
-			emit_signal("death")
+			emit_signal("death", global_position)
 	else:
 		outside_impulse += source.direction_to(global_position) * force
 	
@@ -94,8 +98,14 @@ func attack_current_target():
 		
 
 func _physics_process(delta):
-	health_bar.set_size(Vector2(hp * health_max_size / max_stat, health_bar.rect_size.y))
-	morale_bar.set_size(Vector2(morale * morale_max_size / max_stat, morale_bar.rect_size.y))
+	if hp < max_stat:
+		health_bar.set_size(Vector2((1 - hp / max_stat) * health_max_size, health_bar.rect_size.y))
+		health_bar.show()
+	morale_bar.set_size(Vector2((1 - morale / max_stat) * morale_max_size, morale_bar.rect_size.y))
+	if morale < max_stat:
+		morale_bar.show()
+	else:
+		morale_bar.hide()
 	
 	var bodies = friend_zone.get_overlapping_bodies()
 	

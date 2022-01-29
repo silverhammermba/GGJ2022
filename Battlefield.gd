@@ -4,6 +4,16 @@ signal pawns_remaining(count)
 
 const pawn_scene = preload("res://Pawn.tscn")
 
+const blood = [
+	preload("res://assets/bloodsplats_128x128/bloodsplats_0001.png"),
+	preload("res://assets/bloodsplats_128x128/bloodsplats_0002.png"),
+	preload("res://assets/bloodsplats_128x128/bloodsplats_0003.png"),
+	preload("res://assets/bloodsplats_128x128/bloodsplats_0004.png"),
+	preload("res://assets/bloodsplats_128x128/bloodsplats_0005.png"),
+	preload("res://assets/bloodsplats_128x128/bloodsplats_0006.png"),
+	preload("res://assets/bloodsplats_128x128/bloodsplats_0007.png"),
+]
+
 var field_size: Vector2
 export var deploy_edge = 0
 export var deploy_width = 100
@@ -12,9 +22,12 @@ var pawn_count = army_size * 2
 
 var trues = []
 var falses = []
+var grass: Sprite
 
 func _ready():
 	field_size = get_viewport().get_visible_rect().size
+	
+	grass = $Grass
 	
 	for _i in range(army_size):
 		trues.append(add_pawn(true))
@@ -70,6 +83,15 @@ func add_pawn(faction):
 	
 	return weakref(pawn)
 	
-func decrement_pawn_count():
+func decrement_pawn_count(position):
 	pawn_count -= 1
+	add_blood(position)
 	emit_signal("pawns_remaining", pawn_count)
+	
+func add_blood(position):
+	var sprite = Sprite.new()
+	sprite.texture = blood[RNG.gen.randi_range(0, blood.size() - 1)]
+	add_child_below_node(grass, sprite)
+	sprite.global_position = position
+	sprite.scale = Vector2(0.15, 0.15)
+	sprite.modulate = Color(1, 1, 1, 0.75)

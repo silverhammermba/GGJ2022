@@ -51,8 +51,9 @@ func deactivate():
 	set_process(false)
 	
 func run():
-	run_state = RunState.PREPARING
-	timer.start(delay)
+	if run_state == RunState.INACTIVE:
+		run_state = RunState.PREPARING
+		timer.start(delay)
 
 func _on_Timer_timeout():
 	run_state = RunState.ACTIVE
