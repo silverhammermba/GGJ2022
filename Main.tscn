@@ -11,6 +11,7 @@ script = ExtResource( 3 )
 [node name="Controls" parent="." instance=ExtResource( 2 )]
 
 [node name="Battlefield" parent="." instance=ExtResource( 1 )]
+army_size = 10
 
 [node name="Powers" parent="." instance=ExtResource( 5 )]
 

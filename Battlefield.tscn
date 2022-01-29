@@ -11,7 +11,7 @@ extents = Vector2( 12, 335.5 )
 [node name="Battlefield" type="Node2D"]
 script = ExtResource( 2 )
 deploy_edge = 200
-army_size = 10
+army_size = 100
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 collision_layer = 4

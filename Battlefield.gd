@@ -26,7 +26,8 @@ func _process(_delta):
 			num_trues += 1
 			avg_true += pawn.global_position
 
-	avg_true /= num_trues
+	if num_trues > 0:
+		avg_true /= num_trues
 	
 	var avg_false = Vector2()
 	var num_falses = 0
@@ -38,7 +39,8 @@ func _process(_delta):
 				num_falses += 1
 				avg_false += pawn.global_position
 
-	avg_false /= num_falses
+	if num_falses > 0:
+		avg_false /= num_falses
 	
 	for i in range(army_size):
 		var pawn = trues[i].get_ref()
