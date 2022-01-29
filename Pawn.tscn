@@ -11,8 +11,7 @@ radius = 104.235
 [node name="Pawn" type="RigidBody2D"]
 mode = 2
 script = ExtResource( 2 )
-speed = 20
-weight_follow_herd = 5.0
+speed = 30
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )

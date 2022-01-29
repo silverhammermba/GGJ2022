@@ -5,49 +5,35 @@ export var morale = 100
 export var speed = 10
 export var weight_toward_friends = 1.0
 export var weight_follow_herd = 1.0
-export var follow_herd_speed_threshold = 1.0
+export var max_turn_per_sec = PI / 4
 
 var friend_zone: Area2D
 
-var target_direction = Vector2()
+var target_dir: Vector2
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
+	target_dir = RNG.rand_vec2()
 	friend_zone = $FriendZone
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	var bodies = friend_zone.get_overlapping_bodies()
 	
 	if bodies.size() == 1:
-		target_direction = Vector2()
 		return
 		
-	var friend_centroid = Vector2()
-	var herd_direction = Vector2()
-	
-	for body in bodies:
-		if body != self:
-			friend_centroid += body.global_position
-			herd_direction += body.linear_velocity
-			
-	friend_centroid /= (bodies.size() - 1)
-	herd_direction /= (bodies.size() - 1)
-	
-	var toward_friends = (friend_centroid - global_position).normalized()
-	herd_direction = herd_direction.normalized()
-	
-	var factors = [
-		[toward_friends, weight_toward_friends * (bodies.size() - 1)],
-		[herd_direction, weight_follow_herd * (bodies.size() - 1)]
-	]
-	
-	var num = Vector2()
-	var den = 0
-	for factor in factors:
-		num += factor[0] * factor[1]
-		den += factor[1]
+	var pull_angle = 0.0
 		
-	target_direction = num / den
+	for body in bodies:
+		if body == self:
+			continue
+			
+		pull_angle += target_dir.angle_to(body.global_position - global_position) * weight_toward_friends
+		pull_angle += target_dir.angle_to(body.target_dir) * weight_follow_herd
+	
+	var total_weight = (weight_toward_friends + weight_follow_herd) * (bodies.size() - 1)
+	pull_angle /= total_weight
+	
+	target_dir = target_dir.rotated(clamp(pull_angle, -max_turn_per_sec * delta, max_turn_per_sec * delta))
 	
 func _integrate_forces(state):
-	applied_force = target_direction * speed
+	applied_force = target_dir * speed
