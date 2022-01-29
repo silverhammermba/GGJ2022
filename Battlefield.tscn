@@ -5,16 +5,16 @@
 [node name="Battlefield" type="Node2D"]
 
 [node name="Pawn" parent="." instance=ExtResource( 1 )]
-position = Vector2( 174, 131 )
+position = Vector2( 884, 162 )
 
 [node name="Pawn2" parent="." instance=ExtResource( 1 )]
-position = Vector2( 196, 373 )
+position = Vector2( 403, 278 )
 
 [node name="Pawn3" parent="." instance=ExtResource( 1 )]
-position = Vector2( 464, 227 )
+position = Vector2( 175, 171 )
 
 [node name="Pawn4" parent="." instance=ExtResource( 1 )]
-position = Vector2( 684, 361 )
+position = Vector2( 648, 284 )
 
 [node name="Pawn5" parent="." instance=ExtResource( 1 )]
-position = Vector2( 434, 182 )
+position = Vector2( 407, 195 )

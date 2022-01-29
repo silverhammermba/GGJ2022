@@ -9,6 +9,7 @@
 radius = 104.235
 
 [node name="Pawn" type="RigidBody2D"]
+mode = 2
 script = ExtResource( 2 )
 speed = 1
 
