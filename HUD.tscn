@@ -104,15 +104,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label2" type="Label" parent="PawnsRemainingContainer"]
+[node name="Counter" type="Label" parent="PawnsRemainingContainer"]
 margin_right = 111.0
 margin_bottom = 14.0
-text = "Pawns Remaining"
-
-[node name="Counter" type="Label" parent="PawnsRemainingContainer"]
-margin_top = 18.0
-margin_right = 111.0
-margin_bottom = 32.0
+text = "Deaths: 0"
 
 [node name="LoseLabel" type="Label" parent="."]
 anchor_top = 0.5

@@ -30,7 +30,7 @@ func _on_Powers_energy_update(energy):
 	energy_rect.set_size(Vector2(energy_max_size * energy, energy_rect.rect_size.y))
 
 func update_pawns_remaining(count):
-	$PawnsRemainingContainer/Counter.text = str(count)
+	$PawnsRemainingContainer/Counter.text = "Deaths: " + str(count)
 
 func show_win_condition():
 	$WinLabel.show()
