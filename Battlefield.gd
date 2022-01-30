@@ -77,6 +77,11 @@ func reset():
 				pawn.queue_free()
 		trues.clear()
 		falses.clear()
+
+	# Clean up blood
+	for node in get_tree().get_nodes_in_group("blood_group"):
+		remove_child(node)
+		node.queue_free()
 	
 	# Create Pawns
 	for _i in range(army_size):
@@ -110,6 +115,7 @@ func add_blood(position):
 	var sprite = Sprite.new()
 	sprite.texture = blood[RNG.gen.randi_range(0, blood.size() - 1)]
 	add_child_below_node(grass, sprite)
+	sprite.add_to_group("blood_group")
 	sprite.global_position = position
 	sprite.scale = Vector2(0.15, 0.15)
 	sprite.modulate = Color(1, 1, 1, 0.75)

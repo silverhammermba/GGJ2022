@@ -37,6 +37,7 @@ func _physics_process(delta):
 	
 func _on_KillArea_body_entered(body):
 	if "faction" in body:
+		body.stun()
 		body.damage(damage, damage * damage_force_scale, global_position)
 
 func _on_DemoralizeArea_body_entered(body):

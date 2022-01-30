@@ -3,6 +3,8 @@ extends Node
 var maximum_allowable_deaths
 export var max_lost_percentage = 0.25
 export var win_duration = 60.0
+export var win_screen_delay = 2
+
 var win_timer: Timer
 
 export var min_volume = -40.0
@@ -77,7 +79,7 @@ func win_condition():
 	if not game_over:
 		game_over = true
 		$Battlefield.evacuate_pawns()
-		$WinConditionTimer.start(5)
+		$WinConditionTimer.start(win_screen_delay)
 	
 func _on_WinConditionTimer_timeout():
 	$HUD.show_win_condition()

@@ -80,6 +80,7 @@ func _on_Timer_timeout():
 
 func _on_KillArea_body_entered(body):
 	if "faction" in body:
+		body.stun()
 		body.damage(strength, strength * strength_force_scale, global_position)
 
 func _on_DemoralizeArea_body_entered(body):
