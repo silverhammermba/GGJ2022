@@ -6,8 +6,9 @@
 [node name="Powers" type="Node"]
 script = ExtResource( 1 )
 energy_hz = 20.0
-stomp_cost = 40.0
 boulder_cost = 0.4
 boulder_speed_scale = 0.5
 
 [node name="Stomp" parent="." instance=ExtResource( 2 )]
+
+[connection signal="stomped" from="Stomp" to="." method="_on_Stomp_stomped"]

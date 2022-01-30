@@ -3,6 +3,7 @@ extends Node
 enum Power { NONE, STOMP, BOULDER }
 var current_power = Power.NONE
 
+signal stomped(position)
 signal energy_update
 
 export var max_energy = 100.0
@@ -43,13 +44,13 @@ func set_active_power(power):
 		deactivate(current_power)
 		activate(power)
 		current_power = power
-			
+		
 func activate(power):
 	if power == Power.NONE:
 		pass
 	elif power == Power.STOMP:
 		$Stomp.activate()
-	
+		
 func deactivate(power):
 	if power == Power.NONE:
 		pass
@@ -79,3 +80,7 @@ func run(power, event):
 				node.roll(drag, speed)
 				energy -= cost
 			
+
+
+func _on_Stomp_stomped(position):
+	emit_signal("stomped", position)

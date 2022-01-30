@@ -31,5 +31,6 @@ autoplay = true
 [connection signal="reset_power" from="HUD" to="." method="_on_HUD_reset_power"]
 [connection signal="pawns_remaining" from="Battlefield" to="." method="_on_Battlefield_pawns_remaining"]
 [connection signal="energy_update" from="Powers" to="HUD" method="_on_Powers_energy_update"]
+[connection signal="stomped" from="Powers" to="Battlefield" method="_on_Powers_stomped"]
 [connection signal="timeout" from="WinConditionTimer" to="." method="_on_WinConditionTimer_timeout"]
 [connection signal="timeout" from="WinTimer" to="." method="_on_WinTimer_timeout"]
