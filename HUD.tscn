@@ -74,20 +74,29 @@ margin_top = 40.0
 margin_right = 1024.0
 margin_bottom = 60.0
 text = "None"
+align = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="StompButton" type="Button" parent="."]
 margin_left = 922.0
 margin_top = 64.0
 margin_right = 1024.0
 margin_bottom = 84.0
-text = "Stomp"
+text = "1: Stomp"
+align = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="BoulderButton" type="Button" parent="."]
 margin_left = 922.0
 margin_top = 88.0
 margin_right = 1024.0
 margin_bottom = 108.0
-text = "Boulder"
+text = "2: Boulder"
+align = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -16,6 +16,9 @@ script = ExtResource( 3 )
 
 [node name="WinConditionTimer" type="Timer" parent="."]
 
+[node name="WinTimer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="activate_boulder" from="HUD" to="." method="_on_HUD_activate_boulder"]
 [connection signal="activate_stomp" from="HUD" to="." method="_on_HUD_activate_stomp"]
 [connection signal="play_again" from="HUD" to="." method="_on_HUD_play_again"]
@@ -23,3 +26,4 @@ script = ExtResource( 3 )
 [connection signal="pawns_remaining" from="Battlefield" to="." method="_on_Battlefield_pawns_remaining"]
 [connection signal="energy_update" from="Powers" to="HUD" method="_on_Powers_energy_update"]
 [connection signal="timeout" from="WinConditionTimer" to="." method="_on_WinConditionTimer_timeout"]
+[connection signal="timeout" from="WinTimer" to="." method="_on_WinTimer_timeout"]

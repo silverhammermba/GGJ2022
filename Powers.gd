@@ -20,6 +20,13 @@ var energy = max_energy
 func _process(delta):
 	energy = clamp(energy + energy_hz * delta, 0, max_energy)
 	emit_signal("energy_update", energy / max_energy)
+	
+	if Input.is_action_just_pressed("no_power"):
+		set_active_power(Power.NONE)
+	elif Input.is_action_just_pressed("power_1"):
+		set_active_power(Power.STOMP)
+	elif Input.is_action_just_pressed("power_2"):
+		set_active_power(Power.BOULDER)
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
