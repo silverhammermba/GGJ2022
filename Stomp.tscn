@@ -16,7 +16,7 @@ scale = Vector2( 0.25, 0.25 )
 script = ExtResource( 2 )
 strength = 60.0
 strength_force_scale = 5.0
-delay = 0.25
+delay = 0.3
 min_alpha = 0.4
 demoralize_effect = 40
 

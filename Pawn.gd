@@ -67,8 +67,9 @@ func set_faction(fac):
 		color = Color(0.9, 0.8, 0)
 	sprite.modulate = color
 	
-func demoralize(amount):
+func terrify(amount, force, source):
 	morale -= amount
+	outside_impulse += source.direction_to(global_position) * force
 	
 func damage(amount, force, source: Vector2):
 	hp -= amount

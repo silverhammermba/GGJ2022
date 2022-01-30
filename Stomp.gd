@@ -64,4 +64,4 @@ func _on_KillArea_body_entered(body):
 
 func _on_DemoralizeArea_body_entered(body):
 	if "faction" in body:
-		body.demoralize(demoralize_effect)
+		body.terrify(demoralize_effect, demoralize_effect * strength_force_scale, global_position)
