@@ -82,6 +82,16 @@ margin_right = 1024.0
 margin_bottom = 84.0
 text = "Stomp"
 
+[node name="BoulderButton" type="Button" parent="."]
+margin_left = 922.0
+margin_top = 88.0
+margin_right = 1024.0
+margin_bottom = 108.0
+text = "Boulder"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="PawnsRemainingContainer" type="VBoxContainer" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
@@ -147,4 +157,5 @@ __meta__ = {
 
 [connection signal="pressed" from="NoPowerButton" to="." method="_on_NoPowerButton_pressed"]
 [connection signal="pressed" from="StompButton" to="." method="_on_StompButton_pressed"]
+[connection signal="pressed" from="BoulderButton" to="." method="_on_BoulderButton_pressed"]
 [connection signal="pressed" from="PlayAgainButton" to="." method="_on_PlayAgainButton_pressed"]

@@ -14,6 +14,9 @@ func _on_HUD_reset_power():
 
 func _on_HUD_activate_stomp():
 	$Powers.set_active_power($Powers.Power.STOMP)
+	
+func _on_HUD_activate_boulder():
+	$Powers.set_active_power($Powers.Power.BOULDER)
 
 func _on_Battlefield_pawns_remaining(count):
 	$HUD.update_pawns_remaining(count)
@@ -29,3 +32,4 @@ func reset():
 func lose_condition():
 	$Battlefield.halt_pawns()
 	$HUD.show_lose_condition()
+
