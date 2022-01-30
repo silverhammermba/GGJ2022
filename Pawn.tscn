@@ -68,6 +68,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="StunTimer" type="Timer" parent="."]
+
 [connection signal="body_entered" from="." to="." method="_on_Pawn_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_Pawn_body_exited"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="StunTimer" to="." method="_on_StunTimer_timeout"]

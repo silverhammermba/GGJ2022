@@ -20,6 +20,7 @@ export var morale_herd_per_sec = 1
 export var morale_outnumber_per_sec = 1
 export var morale_hp_per_sec = 1
 export var retreat_threshold = 30
+export var stun_delay = 0.5
 
 var viewport_size
 var speed = speed_out_of_combat
@@ -41,6 +42,9 @@ var health_max_size
 var morale_max_size
 
 var sent_death = false
+var is_stunned = false
+var enable_stun = false
+var disable_stun = false
 
 enum Routine { NORMAL, EVACUATE }
 var routine = Routine.NORMAL
@@ -60,7 +64,6 @@ func _ready():
 	attack_timer = $Timer
 	attack_timer.start(attack_delay)
 	attack_timer.set_paused(true)
-	
 	
 func set_faction(fac):
 	faction = fac
@@ -87,6 +90,11 @@ func damage(amount, force, source: Vector2):
 	else:
 		outside_impulse += source.direction_to(global_position) * force
 	
+func stun():
+	if !is_stunned:
+		enable_stun = true
+		$StunTimer.start(stun_delay)
+	
 func start_attacking(body):
 	if !attack_target and "faction" in body and body.faction != faction:
 		attack_timer.set_paused(false)
@@ -106,6 +114,15 @@ func evacuate():
 	routine = Routine.EVACUATE
 		
 func _physics_process(delta):
+	if enable_stun:
+		get_node("CollisionShape2D").disabled = true
+		enable_stun = false
+		is_stunned = true
+	elif disable_stun:
+		get_node("CollisionShape2D").disabled = false
+		disable_stun = false
+		is_stunned = false
+	
 	if routine == Routine.NORMAL:
 		if hp < max_stat:
 			health_bar.set_size(Vector2((1 - hp / max_stat) * health_max_size, health_bar.rect_size.y))
@@ -194,4 +211,7 @@ func _on_Pawn_body_exited(body):
 
 func _on_Timer_timeout():
 	attack_current_target()
-	
+
+func _on_StunTimer_timeout():
+	$StunTimer.stop()
+	disable_stun = true
