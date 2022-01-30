@@ -82,7 +82,9 @@ radius = 53.0094
 rotation = -1.5708
 scale = Vector2( 0.3, 0.3 )
 script = ExtResource( 2 )
-demoralize_force_scale = 3.0
+damage = 0.2
+demoralize_effect = 0.4
+demoralize_force_scale = 2.0
 speed_anim_ratio = 0.2
 
 [node name="DemoralizeArea" type="Area2D" parent="."]
@@ -95,7 +97,7 @@ shape = SubResource( 14 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 scale = Vector2( 4.3125, 4.3125 )
 frames = SubResource( 13 )
-frame = 5
+frame = 11
 playing = true
 
 [node name="KillArea" type="Area2D" parent="."]

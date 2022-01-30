@@ -5,7 +5,7 @@ extends Node2D
 
 export var damage = 60.0
 export var damage_force_scale = 5.0
-export var demoralize_effect = 40
+export var demoralize_effect = 40.0
 export var demoralize_force_scale = 5.0
 export var speed_anim_ratio = 1.0
 
@@ -13,8 +13,6 @@ var kill_coll: CollisionShape2D
 var demoralize_coll: CollisionShape2D
 var sprite: AnimatedSprite
 
-var speed = 0
-var direction = Vector2()
 var roll_hz = Vector2()
 
 enum RunState { INACTIVE, PREPARING, ACTIVE, CONCLUDED }
@@ -26,8 +24,12 @@ func _ready():
 	sprite = $AnimatedSprite
 	
 func roll(direction, speed):
+	# scale effect by speed
+	damage = damage * speed
+	demoralize_effect = demoralize_effect * speed
+	# set movement and appearance to match roll
 	rotate(direction.angle())
-	roll_hz = direction * speed
+	roll_hz = direction.normalized() * speed
 	sprite.speed_scale = speed * speed_anim_ratio
 	
 func _physics_process(delta):
