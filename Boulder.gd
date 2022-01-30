@@ -12,6 +12,7 @@ export var speed_anim_ratio = 1.0
 var kill_coll: CollisionShape2D
 var demoralize_coll: CollisionShape2D
 var sprite: AnimatedSprite
+var splat_sound: AudioStreamPlayer2D
 
 var roll_hz = Vector2()
 
@@ -22,6 +23,7 @@ func _ready():
 	demoralize_coll = $DemoralizeArea/CollisionShape2D
 	kill_coll = $KillArea/CollisionShape2D
 	sprite = $AnimatedSprite
+	splat_sound = $SplatPlayer
 	
 func roll(direction, speed):
 	# scale effect by speed
@@ -39,6 +41,7 @@ func _on_KillArea_body_entered(body):
 	if "faction" in body:
 		body.stun()
 		body.damage(damage, damage * damage_force_scale, global_position)
+		splat_sound.play()
 
 func _on_DemoralizeArea_body_entered(body):
 	if "faction" in body:

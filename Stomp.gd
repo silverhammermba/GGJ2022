@@ -59,11 +59,11 @@ func _physics_process(_delta):
 		kill_coll.disabled = true
 		run_state = RunState.INACTIVE
 		sprite.modulate = Color(color.r, color.g, color.b, min_alpha)
-		sprite.scale = max_sprite_scale * min_scale
+		sprite.scale = max_sprite_scale
 
 func activate():
 	sprite.modulate = Color(color.r, color.g, color.b, min_alpha)
-	sprite.scale = max_sprite_scale * min_scale
+	sprite.scale = max_sprite_scale
 	show()
 	set_process(true)
 	

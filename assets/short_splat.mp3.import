@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/short_splat.mp3-d10787caab7d4e4ab2d407ecafd0d1ba.mp3str"
+
+[deps]
+
+source_file="res://assets/short_splat.mp3"
+dest_files=[ "res://.import/short_splat.mp3-d10787caab7d4e4ab2d407ecafd0d1ba.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
