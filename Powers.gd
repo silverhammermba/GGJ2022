@@ -81,6 +81,5 @@ func run(power, event):
 				energy -= cost
 			
 
-
 func _on_Stomp_stomped(position):
 	emit_signal("stomped", position)

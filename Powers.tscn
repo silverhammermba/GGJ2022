@@ -8,6 +8,7 @@ script = ExtResource( 1 )
 energy_hz = 20.0
 boulder_cost = 0.4
 boulder_speed_scale = 0.5
+min_boulder_speed = 40.0
 
 [node name="Stomp" parent="." instance=ExtResource( 2 )]
 

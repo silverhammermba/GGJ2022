@@ -12,6 +12,7 @@ extents = Vector2( 12, 335.5 )
 [node name="Battlefield" type="Node2D"]
 script = ExtResource( 2 )
 deploy_edge = 200
+army_size = 75
 
 [node name="Grass" type="Sprite" parent="."]
 position = Vector2( 508, 307.5 )
