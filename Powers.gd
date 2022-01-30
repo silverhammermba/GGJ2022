@@ -9,6 +9,7 @@ export var max_energy = 100.0
 export var energy_hz = 30.0
 export var stomp_cost = 30.0
 export var boulder_cost = 10.0
+export var boulder_speed = 80.0
 
 var boulder = preload("res://Boulder.tscn")
 var drag_start
@@ -59,7 +60,7 @@ func run(power, event):
 				var node = boulder.instance()
 				add_child(node)
 				node.global_position = drag_start
-				node.direction = drag_start.direction_to(event.global_position)
-				node.rotate(node.direction.angle())
+				var direction = drag_start.direction_to(event.global_position)
+				node.roll(direction, boulder_speed)
 				energy -= boulder_cost
 			
