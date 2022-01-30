@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/146321__touchassembly__floor-trading5.mp3-bd255136a3cff56211311d3af976c757.mp3str"
+
+[deps]
+
+source_file="res://assets/146321__touchassembly__floor-trading5.mp3"
+dest_files=[ "res://.import/146321__touchassembly__floor-trading5.mp3-bd255136a3cff56211311d3af976c757.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

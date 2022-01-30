@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/175950__freefire66__swordbattle1.mp3-131ca274985e618e431cc3f17aee5533.mp3str"
+
+[deps]
+
+source_file="res://assets/175950__freefire66__swordbattle1.mp3"
+dest_files=[ "res://.import/175950__freefire66__swordbattle1.mp3-131ca274985e618e431cc3f17aee5533.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

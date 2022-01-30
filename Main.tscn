@@ -1,13 +1,16 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Battlefield.tscn" type="PackedScene" id=1]
 [ext_resource path="res://HUD.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Main.gd" type="Script" id=3]
-[ext_resource path="res://assets/192072__pfranzen__ambient-battle-noise-swords-and-shouting.mp3" type="AudioStream" id=4]
+[ext_resource path="res://assets/175950__freefire66__swordbattle1.mp3" type="AudioStream" id=4]
 [ext_resource path="res://Powers.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/146321__touchassembly__floor-trading5.mp3" type="AudioStream" id=6]
 
 [node name="Main" type="Node"]
 script = ExtResource( 3 )
+min_sword1_volume = -40.0
+min_sword2_volume = -40.0
 
 [node name="HUD" parent="." instance=ExtResource( 2 )]
 
@@ -20,9 +23,20 @@ script = ExtResource( 3 )
 [node name="WinTimer" type="Timer" parent="."]
 one_shot = true
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="ShoutAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -80.0
+autoplay = true
+
+[node name="SwordAudio1" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
 volume_db = -80.0
+autoplay = true
+
+[node name="SwordAudio2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = -80.0
+pitch_scale = 0.9
 autoplay = true
 
 [connection signal="activate_boulder" from="HUD" to="." method="_on_HUD_activate_boulder"]

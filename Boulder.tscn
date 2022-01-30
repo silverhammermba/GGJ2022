@@ -72,7 +72,7 @@ animations = [ {
 "frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ) ],
 "loop": true,
 "name": "default",
-"speed": 10.0
+"speed": 1.0
 } ]
 
 [sub_resource type="CircleShape2D" id=15]
@@ -98,7 +98,7 @@ shape = SubResource( 14 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 scale = Vector2( 4.3125, 4.3125 )
 frames = SubResource( 13 )
-frame = 10
+frame = 1
 playing = true
 
 [node name="KillArea" type="Area2D" parent="."]
