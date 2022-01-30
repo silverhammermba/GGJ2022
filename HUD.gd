@@ -4,7 +4,12 @@ signal play_again
 signal reset_power
 signal activate_stomp
 
+var energy_max_size
+var energy_rect: ColorRect
+
 func _ready():
+	energy_rect = $ManaRect
+	energy_max_size = energy_rect.rect_size.x
 	reset()
 
 func _on_PlayAgainButton_pressed():
@@ -16,6 +21,9 @@ func _on_NoPowerButton_pressed():
 
 func _on_StompButton_pressed():
 	emit_signal("activate_stomp")
+	
+func _on_Powers_energy_update(energy):
+	energy_rect.set_size(Vector2(energy_max_size * energy, energy_rect.rect_size.y))
 
 func update_pawns_remaining(count):
 	$PawnsRemainingContainer/Counter.text = str(count)

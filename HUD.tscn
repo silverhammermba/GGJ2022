@@ -27,33 +27,59 @@ offset = Vector2( -10, 10 )
 transform = Transform2D( 1, 0, 0, 1, -10, 10 )
 script = ExtResource( 1 )
 
-[node name="PowersContainer" type="VBoxContainer" parent="."]
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -102.0
-margin_bottom = -536.0
+[node name="ManaBGRect" type="ColorRect" parent="."]
+margin_left = 922.0
+margin_top = -3.0
+margin_right = 1024.0
+margin_bottom = 16.0
+color = Color( 0.262745, 0.262745, 0.262745, 0.698039 )
 __meta__ = {
-"_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="PowersContainer"]
-margin_right = 102.0
+[node name="ManaRect" type="ColorRect" parent="."]
+margin_left = 922.0
+margin_top = -3.0
+margin_right = 1024.0
+margin_bottom = 16.0
+color = Color( 0.568627, 0.168627, 0.580392, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ManaLabel" type="Label" parent="."]
+margin_left = 922.0
+margin_right = 1024.0
 margin_bottom = 14.0
+text = "Mana"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TitleLabel" type="Label" parent="."]
+margin_left = 923.0
+margin_top = 21.0
+margin_right = 1025.0
+margin_bottom = 35.0
 text = "Powers"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="NoPowerButton" type="Button" parent="PowersContainer"]
-margin_top = 18.0
-margin_right = 102.0
-margin_bottom = 38.0
+[node name="NoPowerButton" type="Button" parent="."]
+margin_left = 922.0
+margin_top = 40.0
+margin_right = 1024.0
+margin_bottom = 60.0
 text = "None"
 
-[node name="StompButton" type="Button" parent="PowersContainer"]
-margin_top = 42.0
-margin_right = 102.0
-margin_bottom = 62.0
+[node name="StompButton" type="Button" parent="."]
+margin_left = 922.0
+margin_top = 64.0
+margin_right = 1024.0
+margin_bottom = 84.0
 text = "Stomp"
 
 [node name="PawnsRemainingContainer" type="VBoxContainer" parent="."]
@@ -119,6 +145,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="pressed" from="PowersContainer/NoPowerButton" to="." method="_on_NoPowerButton_pressed"]
-[connection signal="pressed" from="PowersContainer/StompButton" to="." method="_on_StompButton_pressed"]
+[connection signal="pressed" from="NoPowerButton" to="." method="_on_NoPowerButton_pressed"]
+[connection signal="pressed" from="StompButton" to="." method="_on_StompButton_pressed"]
 [connection signal="pressed" from="PlayAgainButton" to="." method="_on_PlayAgainButton_pressed"]
