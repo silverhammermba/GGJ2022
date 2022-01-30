@@ -27,6 +27,9 @@ func _process(delta):
 		set_active_power(Power.STOMP)
 	elif Input.is_action_just_pressed("power_2"):
 		set_active_power(Power.BOULDER)
+		
+	if current_power == Power.STOMP:
+		$Stomp.show_ready(energy >= stomp_cost)
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
