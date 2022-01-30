@@ -15,6 +15,7 @@ const blood = [
 ]
 
 var field_size: Vector2
+var grass: Sprite
 export var deploy_edge = 0
 export var deploy_width = 100
 export var army_size = 50
@@ -23,7 +24,6 @@ export var army_size = 50
 var pawn_count
 var trues = []
 var falses = []
-var grass: Sprite
 
 func _ready():
 	field_size = get_viewport().get_visible_rect().size
@@ -118,8 +118,18 @@ func halt_pawns():
 	for i in range(army_size):
 		var pawn = trues[i].get_ref()
 		if pawn:
-			pawn.speed = 0
+			pawn.halt()
 	for i in range(army_size):
 		var pawn = falses[i].get_ref()
 		if pawn:
-			pawn.speed = 0
+			pawn.halt()
+			
+func evacuate_pawns():
+	for i in range(army_size):
+		var pawn = trues[i].get_ref()
+		if pawn:
+			pawn.evacuate()
+	for i in range(army_size):
+		var pawn = falses[i].get_ref()
+		if pawn:
+			pawn.evacuate()

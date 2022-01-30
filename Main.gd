@@ -32,6 +32,12 @@ func reset():
 	$Battlefield.reset()
 
 func lose_condition():
-	$Battlefield.halt_pawns()
 	$HUD.show_lose_condition()
-
+	
+func win_condition():
+	$Battlefield.evacuate_pawns()
+	$WinConditionTimer.start(5)
+	
+func _on_WinConditionTimer_timeout():
+	$HUD.show_win_condition()
+	$WinConditionTimer.stop()

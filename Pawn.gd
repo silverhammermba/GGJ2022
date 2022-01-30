@@ -21,6 +21,7 @@ export var morale_outnumber_per_sec = 1
 export var morale_hp_per_sec = 1
 export var retreat_threshold = 30
 
+var viewport_size
 var speed = speed_out_of_combat
 
 var friend_zone: Area2D
@@ -41,9 +42,12 @@ var morale_max_size
 
 var sent_death = false
 
+enum Routine { NORMAL, EVACUATE }
+var routine = Routine.NORMAL
 
 
 func _ready():
+	viewport_size = get_viewport().size
 	sprite = $Sprite
 	hp = max_stat
 	morale = max_stat
@@ -56,6 +60,7 @@ func _ready():
 	attack_timer = $Timer
 	attack_timer.start(attack_delay)
 	attack_timer.set_paused(true)
+	
 	
 func set_faction(fac):
 	faction = fac
@@ -97,78 +102,89 @@ func attack_current_target():
 	if attack_target:
 		attack_target.damage(attack_power, attack_power * damage_force_scale, global_position)
 		
-
+func evacuate():
+	routine = Routine.EVACUATE
+		
 func _physics_process(delta):
-	if hp < max_stat:
-		health_bar.set_size(Vector2((1 - hp / max_stat) * health_max_size, health_bar.rect_size.y))
-		health_bar.show()
-	morale_bar.set_size(Vector2((1 - morale / max_stat) * morale_max_size, morale_bar.rect_size.y))
-	if morale < max_stat:
-		morale_bar.show()
-	else:
-		morale_bar.hide()
-	
-	var bodies = friend_zone.get_overlapping_bodies()
-	
-	var pull_angle = 0.0
-	var total_weight = 0.0
-	var num_friends = 0
-	var num_enemies = 0
-	var morale_from_following_herd = 0
-
-	for body in bodies:
-		if body == self:
-			continue
-		
-		if body.faction == faction:
-			num_friends += 1
-			pull_angle += target_dir.angle_to(body.global_position - global_position) * weight_toward_friends
-			var angle_to_friend = target_dir.angle_to(body.target_dir)
-			pull_angle += angle_to_friend * weight_follow_herd
-			
-			# -1 to 1 for going in opposite/same direction as friend
-			morale_from_following_herd += 1 - 2 * abs(angle_to_friend) / PI
+	if routine == Routine.NORMAL:
+		if hp < max_stat:
+			health_bar.set_size(Vector2((1 - hp / max_stat) * health_max_size, health_bar.rect_size.y))
+			health_bar.show()
+		morale_bar.set_size(Vector2((1 - morale / max_stat) * morale_max_size, morale_bar.rect_size.y))
+		if morale < max_stat:
+			morale_bar.show()
 		else:
-			num_enemies += 1
-	
-	# average over all friends
-	if num_friends > 0:
-		morale_from_following_herd /= num_friends
-	# if enemies are near, you can regain some morale by having more friends (or lose it for being outnumbered)
-	var morale_from_outnumber = 0.5
-	if num_enemies > 0:
-		morale_from_outnumber = clamp((num_friends - num_enemies) / max_outnumber, -1, 1)
-	# -1 to 0 for current hp
-	var morale_from_hp = hp / max_stat - 1
-	
-	var delta_morale = (morale_from_following_herd * morale_herd_per_sec + morale_from_outnumber * morale_outnumber_per_sec + morale_from_hp * morale_hp_per_sec)
-	morale = clamp(morale + delta_morale * delta, 0, max_stat)
-
-	# if completely demoralized, allow past barriers
-	set_collision_mask_bit(2, morale > 0)
-	
-	total_weight += (weight_toward_friends + weight_follow_herd) * num_friends
-
-	var current_speed = speed
-	if nemesis:
-		if morale < retreat_threshold:
-			# all that matters now is getting away from the enemy
-			pull_angle = target_dir.angle_to(global_position - nemesis)
-			total_weight = 1
-		else:	
-			pull_angle += target_dir.angle_to(nemesis - global_position) * weight_toward_nemesis
-			total_weight += weight_toward_nemesis
-	else:
-		current_speed = 0
+			morale_bar.hide()
 		
-	if total_weight > 0:
-		pull_angle /= total_weight
-	
-	target_dir = target_dir.rotated(clamp(pull_angle, -max_turn_per_sec * delta, max_turn_per_sec * delta))
-	
-	apply_central_impulse(target_dir * current_speed)
-	apply_central_impulse(outside_impulse)
-	outside_impulse = Vector2()
+		var bodies = friend_zone.get_overlapping_bodies()
+		
+		var pull_angle = 0.0
+		var total_weight = 0.0
+		var num_friends = 0
+		var num_enemies = 0
+		var morale_from_following_herd = 0
+
+		for body in bodies:
+			if body == self:
+				continue
+			
+			if body.faction == faction:
+				num_friends += 1
+				pull_angle += target_dir.angle_to(body.global_position - global_position) * weight_toward_friends
+				var angle_to_friend = target_dir.angle_to(body.target_dir)
+				pull_angle += angle_to_friend * weight_follow_herd
+				
+				# -1 to 1 for going in opposite/same direction as friend
+				morale_from_following_herd += 1 - 2 * abs(angle_to_friend) / PI
+			else:
+				num_enemies += 1
+		
+		# average over all friends
+		if num_friends > 0:
+			morale_from_following_herd /= num_friends
+		# if enemies are near, you can regain some morale by having more friends (or lose it for being outnumbered)
+		var morale_from_outnumber = 0.5
+		if num_enemies > 0:
+			morale_from_outnumber = clamp((num_friends - num_enemies) / max_outnumber, -1, 1)
+		# -1 to 0 for current hp
+		var morale_from_hp = hp / max_stat - 1
+		
+		var delta_morale = (morale_from_following_herd * morale_herd_per_sec + morale_from_outnumber * morale_outnumber_per_sec + morale_from_hp * morale_hp_per_sec)
+		morale = clamp(morale + delta_morale * delta, 0, max_stat)
+
+		# if completely demoralized, allow past barriers
+		set_collision_mask_bit(2, morale > 0)
+		
+		total_weight += (weight_toward_friends + weight_follow_herd) * num_friends
+
+		var current_speed = speed
+		if nemesis:
+			if morale < retreat_threshold:
+				# all that matters now is getting away from the enemy
+				pull_angle = target_dir.angle_to(global_position - nemesis)
+				total_weight = 1
+			else:	
+				pull_angle += target_dir.angle_to(nemesis - global_position) * weight_toward_nemesis
+				total_weight += weight_toward_nemesis
+		else:
+			current_speed = 0
+			
+		if total_weight > 0:
+			pull_angle /= total_weight
+		
+		target_dir = target_dir.rotated(clamp(pull_angle, -max_turn_per_sec * delta, max_turn_per_sec * delta))
+		
+		apply_central_impulse(target_dir * current_speed)
+		apply_central_impulse(outside_impulse)
+		outside_impulse = Vector2()
+
+	elif routine == Routine.EVACUATE:
+		set_collision_mask_bit(2, false)
+		speed = 10
+		if faction:
+			apply_central_impulse(Vector2(1,0))
+		else:
+			apply_central_impulse(Vector2(-1,0))
 
 func _on_Pawn_body_entered(body):
 	start_attacking(body)
@@ -178,3 +194,4 @@ func _on_Pawn_body_exited(body):
 
 func _on_Timer_timeout():
 	attack_current_target()
+	
