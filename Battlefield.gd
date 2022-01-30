@@ -14,6 +14,8 @@ const blood = [
 	preload("res://assets/bloodsplats_128x128/bloodsplats_0007.png"),
 ]
 
+const stomp = preload("res://assets/stomp/stomp.png")
+	
 var field_size: Vector2
 var grass: Sprite
 export var deploy_edge = 0
@@ -82,6 +84,11 @@ func reset():
 	for node in get_tree().get_nodes_in_group("blood_group"):
 		remove_child(node)
 		node.queue_free()
+		
+	# Clean up stomps
+	for node in get_tree().get_nodes_in_group("stomp_group"):
+		remove_child(node)
+		node.queue_free()
 	
 	# Create Pawns
 	for _i in range(army_size):
@@ -117,7 +124,7 @@ func add_blood(position):
 	add_child_below_node(grass, sprite)
 	sprite.add_to_group("blood_group")
 	sprite.global_position = position
-	sprite.scale = Vector2(0.15, 0.15)
+	sprite.scale = Vector2(0.15, 0.3)
 	sprite.modulate = Color(1, 1, 1, 0.75)
 
 func halt_pawns():
@@ -139,3 +146,13 @@ func evacuate_pawns():
 		var pawn = falses[i].get_ref()
 		if pawn:
 			pawn.evacuate()
+
+func _on_Powers_stomped(position):
+	var sprite = Sprite.new()
+	sprite.texture = stomp
+	add_child_below_node(grass, sprite)
+	sprite.add_to_group("stomp_group")
+	sprite.modulate = Color(0, 0, 0, 0.1)
+	sprite.global_position = position
+	# Hacky hardcoded constant based on Stomp's configuration
+	sprite.scale = sprite.scale * 0.75 * 0.5 * 0.25

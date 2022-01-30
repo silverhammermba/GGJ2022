@@ -1,5 +1,7 @@
 extends Node2D
 
+signal stomped(position)
+
 export var strength = 150.0
 export var strength_force_scale = 1.0
 export var delay = 1.0
@@ -39,7 +41,7 @@ func _process(_delta):
 		var animation_progress = 1 - timer.time_left / delay
 		
 		sprite.modulate = Color(ready_color.r, ready_color.g, ready_color.b, lerp(min_alpha, 1, animation_progress))
-		sprite.scale = max_sprite_scale * lerp(min_scale, 1, animation_progress)
+		sprite.scale = max_sprite_scale * lerp(1, min_scale, animation_progress)
 	elif run_state == RunState.INACTIVE:
 		sprite.modulate = Color(color.r, color.g, color.b, min_alpha)
 	
@@ -48,6 +50,7 @@ func _physics_process(_delta):
 		sprite.modulate = Color(color.r, color.g, color.b, 1)
 		demoralize_coll.disabled = false
 		kill_coll.disabled = false
+		emit_signal("stomped", position)
 		run_state = RunState.CONCLUDED
 		audio.stop()
 		audio.play()
