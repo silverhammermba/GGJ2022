@@ -1,6 +1,7 @@
 extends RigidBody2D
 
 signal death
+signal attack
 
 export var max_stat = 100.0
 export var hp = 100.0
@@ -100,6 +101,7 @@ func stop_attacking(body):
 		
 func attack_current_target():
 	if attack_target:
+		emit_signal("attack")
 		attack_target.damage(attack_power, attack_power * damage_force_scale, global_position)
 		
 func evacuate():

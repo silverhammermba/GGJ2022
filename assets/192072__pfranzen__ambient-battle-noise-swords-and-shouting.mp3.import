@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/192072__pfranzen__ambient-battle-noise-swords-and-shouting.mp3-d579dfd47dab2a8fea090f93d4441523.mp3str"
+
+[deps]
+
+source_file="res://assets/192072__pfranzen__ambient-battle-noise-swords-and-shouting.mp3"
+dest_files=[ "res://.import/192072__pfranzen__ambient-battle-noise-swords-and-shouting.mp3-d579dfd47dab2a8fea090f93d4441523.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
