@@ -12,6 +12,7 @@ var timer: Timer
 var kill_coll: CollisionShape2D
 var demoralize_coll: CollisionShape2D
 var max_sprite_scale: Vector2
+var audio: AudioStreamPlayer2D
 
 enum RunState { INACTIVE, PREPARING, ACTIVE, CONCLUDED }
 var run_state = RunState.INACTIVE
@@ -20,6 +21,7 @@ const unready_color = Color(1, 0, 0)
 var color: Color
 
 func _ready():
+	audio = $AudioStreamPlayer2D
 	demoralize_coll = $DemoralizeArea/CollisionShape2D
 	kill_coll = $KillArea/CollisionShape2D
 	sprite = $Sprite
@@ -47,6 +49,8 @@ func _physics_process(_delta):
 		demoralize_coll.disabled = false
 		kill_coll.disabled = false
 		run_state = RunState.CONCLUDED
+		audio.stop()
+		audio.play()
 	elif run_state == RunState.CONCLUDED:
 		demoralize_coll.disabled = true
 		kill_coll.disabled = true
